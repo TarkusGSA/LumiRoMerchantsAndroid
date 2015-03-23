@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:defaultValue="@bool/preference_notif_default"
+        android:key="notif"
+        android:summary="Включить уведомления"
+        android:title="Уведомления">
+    </CheckBoxPreference>
+    <ListPreference
+        android:defaultValue="20"
+        android:entries="@array/update_time_entries"
+        android:entryValues="@array/update_time_values"
+        android:key="update_time_list"
+        android:summary="Время обновления данных по торговцам"
+        android:title="Период обновления">
+    </ListPreference>
+
+</PreferenceScreen>

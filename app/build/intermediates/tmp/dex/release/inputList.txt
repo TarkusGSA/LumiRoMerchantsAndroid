@@ -1,0 +1,7 @@
+E:\Android\LumiRoMerchantsAndroid-master\app\build\intermediates\classes\release
+E:\Android\LumiRoMerchantsAndroid-master\app\build\intermediates\pre-dexed\release\support-annotations-21.0.3-dcc738e8c586cf368aaedaf93877d7ae9cc58598.jar
+E:\Android\LumiRoMerchantsAndroid-master\app\build\intermediates\pre-dexed\release\hamcrest-core-1.3-ec3787130cc84d1ec9a5d3dbe83ff4195fe0cd6d.jar
+E:\Android\LumiRoMerchantsAndroid-master\app\build\intermediates\pre-dexed\release\internal_impl-21.0.3-f9bb11300cae5ad88ea69936b5394b6d7acb978e.jar
+E:\Android\LumiRoMerchantsAndroid-master\app\build\intermediates\pre-dexed\release\junit-4.12-ba4f99dc23ca63622763d2740f7a704440053272.jar
+E:\Android\LumiRoMerchantsAndroid-master\app\build\intermediates\pre-dexed\release\classes-57709f8b099a486cc97910662c0fdb40938c83d4.jar
+E:\Android\LumiRoMerchantsAndroid-master\app\build\intermediates\pre-dexed\release\classes-af95a5c9326cbbd8b63864e096d842a9450bb1af.jar

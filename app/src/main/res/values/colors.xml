@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="offline">#999999</color>
+    <color name="online">#FFFFA6</color>
+    <color name="profit">#01A2A6</color>
+</resources>

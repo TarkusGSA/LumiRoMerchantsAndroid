@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:padding="15dp">
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/item_578"
+            android:layout_column="0">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Elemental Converter"
+            android:textSize="12sp"
+            android:layout_weight="1"
+            android:layout_column="1">
+        </TextView>
+
+        <TextView
+            android:id="@+id/count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9999/9999"
+            android:textSize="12sp"
+            android:layout_column="2"
+            android:layout_gravity="right">
+        </TextView>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="123 323 999"
+            android:id="@+id/cost"
+            android:layout_column="1"
+            android:textSize="12sp"
+            android:textColor="#888"
+            android:layout_weight="1"
+            android:layout_gravity="left" />
+
+        <TextView
+            android:id="@+id/profit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+1234"
+            android:textSize="12sp"
+            android:textColor="#00aa00"
+            android:layout_column="2"
+            android:layout_gravity="right"
+            android:textStyle="bold">
+        </TextView>
+
+
+    </TableRow>
+</TableLayout>

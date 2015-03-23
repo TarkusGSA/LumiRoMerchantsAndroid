@@ -1,0 +1,55 @@
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:padding="0dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+            android:background="@android:drawable/dialog_holo_dark_frame"
+            >
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/itemImage"
+                android:src="@drawable/item_5819"
+                android:layout_gravity="center_vertical"
+                android:paddingRight="5dp"
+                android:paddingLeft="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/itemName"
+                android:layout_gravity="center_vertical"
+                android:textColor="@android:color/white"
+                android:text="Не задан" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:id="@+id/itemProfit"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_green_light"
+                android:textStyle="bold"
+                android:gravity="right"
+                android:paddingRight="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:id="@+id/itemCnt"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:textColor="@android:color/background_light"
+                android:paddingRight="5dp" />
+
+        </LinearLayout>
+</FrameLayout>
