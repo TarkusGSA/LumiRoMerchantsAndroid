@@ -110,7 +110,7 @@ public class Market_Service extends Service implements Runnable {
             Intent i = new Intent(this, Market_Service.class);
             i.setAction(Market_Service.ACTION_SYNC_START);
 
-            PendingIntent pendingIntent = PendingIntent.getService(this, 0, i, 0);
+            PendingIntent pendingIntent = PendingIntent.getService(this, 0, i, PendingIntent.FLAG_IMMUTABLE);
 
             AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
             Time time = new Time();
