@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">LumiRo Merchant Monitoring</string>
+    <string name="app_name">LumiRo Season 2 (beta)</string>
     <string name="confrim_delete_merc">Вы действительно хотите удалить "%s"?</string>
     <string name="add_merc_dialog_title">Добавить торговца</string>
     <string name="action_sync">Синхронизировать</string>
@@ -28,7 +28,7 @@
     </string-array>
     <string name="title_activity_about">Информация</string>
 
-    <string name="about_text">LumiRo Merchant Monitoring\n\nРазработка:\n Оригинальная идея, модуль опроса: \nKein  (kein.1945@gmail.com)\n\n Пользовательский интерфейс, публикация: \nTarkus (sergey@tarkus-notes.com)</string>
+    <string name="about_text">LumiRo Season 2 (beta)\n\nРазработка:\n Оригинальная идея, модуль опроса: \nKein  (kein.1945@gmail.com)\n\n Пользовательский интерфейс, публикация: \nTarkus (sergey@tarkus-notes.com)</string>
     <string name="action_about">Информация</string>
     <string name="action_settings">Settings</string>
 

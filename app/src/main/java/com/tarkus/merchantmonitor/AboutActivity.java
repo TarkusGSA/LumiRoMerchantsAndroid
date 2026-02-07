@@ -17,7 +17,7 @@ public class AboutActivity extends Activity {
         LumiOnlineRequest request = new LumiOnlineRequest();
         request.delegate = this;
 
-        request.execute("http://www.lumiro.net/online.ajax");
+        request.execute("https://cp.lumi-ragnarok.net/?module=server&action=status-json");
 
 
 /*        Bundle extras = getIntent().getExtras();

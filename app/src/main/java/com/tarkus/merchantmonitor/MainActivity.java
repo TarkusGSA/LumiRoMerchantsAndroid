@@ -6,9 +6,10 @@ import android.content.*;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.app.TaskStackBuilder;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.TaskStackBuilder;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -29,7 +30,7 @@ import java.util.Formatter;
 import java.util.List;
 import java.util.prefs.Preferences;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = "lumiro";
     private int numMessages = 0;
     private Uri alarmSound;
@@ -304,7 +305,7 @@ public class MainActivity extends Activity {
        // Inflate the menu items for use in the action bar
        MenuInflater inflater = getMenuInflater();
        inflater.inflate(R.menu.main_activity_actions, menu);
-       return super.onCreateOptionsMenu(menu);
+       return true;
    }
 
    @Override

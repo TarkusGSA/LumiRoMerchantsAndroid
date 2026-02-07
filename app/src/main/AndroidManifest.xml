@@ -1,54 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tarkus.merchantmonitor"
-    android:versionCode="5"
-    android:versionName="1.3.2" >
-    <!--    android:installLocation="preferExternal"-->
-
-    <uses-sdk android:minSdkVersion="21" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-<!--    <android:uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="18" />
-    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <android:uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="18" />
--->
     <application
+        android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Holo.Light" >
-        <receiver android:name=".LumiroWidget" android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
-                android:resource="@xml/lumiro_widget_provider" />
-        </receiver>
+        android:theme="@style/AppTheme">
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:name="com.tarkus.merchantmonitor.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".PreferencesActivity"
-            android:label="@string/app_name" >
-        </activity>
-
-        <service android:name=".Market_Service" />
-        <service android:name=".LumiroWidgetService"></service>
 
         <activity
-            android:name=".AboutActivity"
-            android:label="@string/title_activity_about" >
-        </activity>
+            android:name="com.tarkus.merchantmonitor.AboutActivity"
+            android:exported="false" />
+
+        <activity
+            android:name="com.tarkus.merchantmonitor.PreferencesActivity"
+            android:exported="false" />
+
+        <receiver
+            android:name="com.tarkus.merchantmonitor.LumiroWidget"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/lumiro_widget_provider" />
+        </receiver>
+
+        <service
+            android:name="com.tarkus.merchantmonitor.Market_Service"
+            android:exported="false" />
+
     </application>
 
 </manifest>

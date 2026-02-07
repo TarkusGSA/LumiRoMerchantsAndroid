@@ -2,20 +2,20 @@ package com.tarkus.merchantmonitor.Market;
 
 import android.util.Log;
 import com.tarkus.merchantmonitor.Item;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by kein on 07/02/14.
@@ -23,23 +23,13 @@ import java.util.regex.Pattern;
 public class Parser {
     private static final String TAG = "net.lumiro.parser";
 
-    public static final String SELL_URI = "http://market.lumiro.net/whosell.php?field=price&order=asc&s=";
-
-    private static final String ResultMatchRegExp = "tr\\sclass=\"line(?:[\\s\\S]*?)div\\sstyle=\"([\\s\\S]*?)\"(?:[\\s\\S]*?)<small>([\\d\\+]*)<\\/small>(?:[\\s\\S]*?)javascript:perf\\('([\\d]+)'\\);\">([^<]+?)<\\/a>([\\s\\S]*?)<\\/td>(?:[\\s\\S]*?)class=\"value\">([\\s\\S]*?)class=\"value\"\\salign=\"right\">([^<]+)<(?:[\\s\\S]*?)align=\"center\">([^<]+)(?:[\\s\\S]*?)class=\"trader(?:[\\s\\S]*?)<a[^>]+>([^<]+)";
-    //                                              /tr\\sclass=\"line(?:[\\s\\S]*?)div\\sstyle=\"([\\s\\S]*?)\"(?:[\\s\\S]*?)<small>([\\d\\+]*)<\\/small>(?:[\\s\\S]*?)javascript:perf\\('([\\d]+)'\\);\">([^<]+?)<\\/a>([\\s\\S]*?)<\\/td>(?:[\\s\\S]*?)class=\"value\">([\\s\\S]*?)class=\"value\"\\salign=\"right\">([^<]+)<(?:[\\s\\S]*?)align=\"center\">([^<]+)(?:[\\s\\S]*?)class=\"trader(?:[\\s\\S]*?)<a[^>]+>([^<]+)/gim
-    private static Pattern parseRegExp;
-
-    public static Pattern getParser(){
-        if(parseRegExp == null){
-            parseRegExp = Pattern.compile(ResultMatchRegExp, Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-        }
-        return parseRegExp;
-    }
+    public static final String SELL_URI = "https://lumi-ragnarok.net/api/market/whosell?limit=50&offset=0&filter=etc&query=";
 
     public static String getSellItems(String search) {
         String url = SELL_URI;
         try{
             url += URLEncoder.encode(search, "utf-8");
+            url += "&jobs=all";
         } catch (UnsupportedEncodingException e) {
             Log.e(TAG, "Search string encodeURI fail. "+search);
             return null;
@@ -51,19 +41,16 @@ public class Parser {
             Log.d(TAG, "Requesting url:" + url);
             response = client.execute(request);
         } catch (IOException e) {
-            Log.e(TAG, "Get html failed. IOException");
+            Log.e(TAG, "Get json failed. IOException");
             return null;
         }
 
-        String html = "";
-        HttpEntity in = response.getEntity();
         try {
-            html = EntityUtils.toString(response.getEntity());
+            return EntityUtils.toString(response.getEntity());
         } catch (IOException e) {
-            Log.e(TAG, "Read html failed. IOException");
+            Log.e(TAG, "Read json failed. IOException");
             return null;
         }
-        return html;
     }
 
     public static List<Item> getItems(String search){
@@ -73,55 +60,93 @@ public class Parser {
         }
 
         List<Item> items = new ArrayList<Item>();
-        Matcher m = getParser().matcher(response);
 
-
-        while(m.find()) {
-            // Получаю карты и доп описание
-            String tmp_cards = "";
-            String aditionalsString = m.group(6).trim();
-            String creator = "";
-            if(aditionalsString.length()>0){
-                String cardsRegExp = "javascript:perf\\('[^']+'\\);\">([^<]+?)<\\/a>";
-                Pattern cardPattern = Pattern.compile(cardsRegExp, Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-                Matcher cardMatcher = cardPattern.matcher(aditionalsString);
-                while( cardMatcher.find()  ){
-                    tmp_cards += cardMatcher.group(1);
-                }
-
-                String creatorRegExp = "javascript:perf\\('[^']+'\\);\">([^<]+?)<\\/a>'s";
-                cardPattern = Pattern.compile(creatorRegExp, Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-                cardMatcher = cardPattern.matcher(aditionalsString);
-                if( cardMatcher.find() ) {
-                    creator = cardMatcher.group(1) + " ";
-                    tmp_cards = tmp_cards.replace(cardMatcher.group(1).trim(),"");
-                }
+        try {
+            JSONObject root = new JSONObject(response);
+            JSONArray results = root.optJSONArray("results");
+            if (results == null) {
+                Log.e(TAG, "No results in response");
+                return items;
             }
 
-            Item item = new Item();
-            item.setId(Integer.parseInt(m.group(3)));
-            Integer refain = 0;
-            try {
-                refain = Integer.parseInt(m.group(2).replace("+",""));
-            } catch(NumberFormatException e) {}
-            item.setRefain( refain );
-            item.setPrice(Integer.parseInt(m.group(7).replace(".","")));
-            item.setCount(Integer.parseInt(m.group(8)));
-            item.setNow_count(item.getCount());
+            for (int i = 0; i < results.length(); i++) {
+                JSONObject result = results.optJSONObject(i);
+                if (result == null) {
+                    continue;
+                }
 
-            String itemName = creator+m.group(4);
-            // Получаю количество слотов
-            if (m.group(5).indexOf(']')>=0)
-            {
-                itemName = itemName+" "+m.group(5).substring(0,m.group(5).indexOf(']')+1).trim();
+                String owner = result.optString("name", "");
+                if (!search.equals(owner)) {
+                    continue;
+                }
+
+                JSONObject itemObj = result.optJSONObject("item");
+                if (itemObj == null) {
+                    continue;
+                }
+
+                Item item = new Item();
+                item.setId(itemObj.optInt("id", 0));
+                item.setRefain(result.optInt("refine", 0));
+                item.setPrice(result.optInt("price", 0));
+                int amount = result.optInt("amount", 0);
+                item.setCount(amount);
+                item.setNow_count(amount);
+
+                String itemName = itemObj.optString("name_japanese", "");
+                int slots = itemObj.optInt("slots", 0);
+                if (slots > 0) {
+                    itemName = itemName + " [" + slots + "]";
+                }
+                item.setName(itemName);
+
+                item.setAttr(buildCardsString(result));
+                item.setOwner(owner);
+
+                items.add(item);
             }
-            item.setName(itemName);
-//            Log.d(TAG, "name - "+m.group(5)+" || "+m.group(6));
-            item.setAttr(tmp_cards);
-            item.setOwner(m.group(9));
-            items.add(item);
+        } catch (JSONException e) {
+            Log.e(TAG, "Parse json failed. JSONException");
+            return null;
         }
+
         Log.d(TAG, "Items count: " + String.valueOf(items.size()));
         return items;
+    }
+
+    private static String buildCardsString(JSONObject result) {
+        StringBuilder cards = new StringBuilder();
+        appendCardName(cards, result, "card_1");
+        appendCardName(cards, result, "card_2");
+        appendCardName(cards, result, "card_3");
+        appendCardName(cards, result, "card_4");
+        return cards.toString().trim();
+    }
+
+    private static void appendCardName(StringBuilder cards, JSONObject result, String key) {
+        if (!result.has(key) || result.isNull(key)) {
+            return;
+        }
+
+        String cardName = "";
+        try {
+            Object card = result.get(key);
+            if (card instanceof JSONObject) {
+                cardName = ((JSONObject) card).optString("name_japanese", "");
+            } else {
+                cardName = String.valueOf(card);
+            }
+        } catch (JSONException e) {
+            return;
+        }
+
+        if (cardName.length() == 0) {
+            return;
+        }
+
+        if (cards.length() > 0) {
+            cards.append(" ");
+        }
+        cards.append(cardName);
     }
 }

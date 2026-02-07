@@ -1,29 +1,42 @@
+// app/build.gradle
 apply plugin: 'com.android.application'
+
 android {
+    namespace 'com.tarkus.merchantmonitor'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'com.tarkus.merchantmonitor'
+        minSdk 21
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+    }
+
+    useLibrary 'org.apache.http.legacy'
+
     signingConfigs {
         config {
             keyAlias 'main'
         }
     }
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
-    defaultConfig {
-        applicationId 'com.tarkus.merchantmonitor'
-        minSdkVersion 10
-        targetSdkVersion 16
-    }
+
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-    }
-    productFlavors {
     }
 }
 
+configurations.all {
+    exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'
+    exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
+}
+
 dependencies {
-    compile 'com.android.support:support-v4:21.0.3'
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'junit:junit:4.12'
+    implementation 'androidx.core:core:1.13.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
+    testImplementation 'junit:junit:4.13.2'
 }

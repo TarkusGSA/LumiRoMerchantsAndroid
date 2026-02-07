@@ -2,6 +2,8 @@ package com.tarkus.merchantmonitor;
 
 import android.os.AsyncTask;
 import android.widget.TextView;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -29,7 +31,7 @@ public class LumiOnlineRequest extends AsyncTask<String, String, String>
             if(statusLine.getStatusCode() == HttpStatus.SC_OK){
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 response.getEntity().writeTo(out);
-                responseString = out.toString("Cp1251");
+                responseString = out.toString("UTF-8");
                 out.close();
             } else{
                 //Closes the connection.
@@ -53,7 +55,22 @@ public class LumiOnlineRequest extends AsyncTask<String, String, String>
         super.onPostExecute(result);
 
         TextView onlineText = (TextView) delegate.findViewById(R.id.onlineText);
-        onlineText.setText("Online: "+result);
+        TextView merchantsText = (TextView) delegate.findViewById(R.id.merchantsText);
+        String online = result;
+        String merchants = "?";
+        if (result != null) {
+            try {
+                JSONObject json = new JSONObject(result);
+                online = json.optString("online", result);
+                merchants = json.optString("merchants", merchants);
+            } catch (JSONException e) {
+                // Keep raw result
+            }
+        }
+        onlineText.setText("Онлайн: " + online + " человек");
+        if (merchantsText != null) {
+            merchantsText.setText("Торговцев: " + merchants);
+        }
 
     }
 }
